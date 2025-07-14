@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BubbleCash Pro - WalletConnect v2</title>
+  <script src="https://unpkg.com/@walletconnect/web3-provider/dist/umd/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.8.2/dist/web3.min.js"></script>
+</head>
+<body>
+  <h1>BubbleCash Pro (WalletConnect v2)</h1>
+  <button onclick="connectWallet()">Connect Wallet</button>
+  <p id="walletInfo">Wallet not connected</p>
+
+  <script>
+    let provider;
+    let web3;
+    let account;
+
+    async function connectWallet() {
+      provider = new WalletConnectProvider.default({
+        projectId: "23d2e5d7d396b245160eb7648ff7a469", // Example public WalletConnect v2 Project ID
+        chains: [56],
+        showQrModal: true,
+        rpcMap: {
+          56: "https://bsc-dataseed.binance.org"
+        },
+        metadata: {
+          name: "BubbleCash Pro",
+          description: "Connect to Trust Wallet",
+          url: "https://bubblecash.netlify.app",
+          icons: ["https://avatars.githubusercontent.com/u/37784886"]
+        }
+      });
+
+      await provider.enable();
+      web3 = new Web3(provider);
+      const accounts = await web3.eth.getAccounts();
+      account = accounts[0];
+
+      document.getElementById("walletInfo").innerText = "Connected: " + account;
+    }
+  </script>
+</body>
+</html>
